@@ -1,6 +1,30 @@
-async function fetchWithRetry(url, options, retries = 3, delay = 2000) {
+async function fetchWithRetry(directUrl, options, retries = 3, delay = 2000) {
+  let isUsingProxy = true;
+  
   for (let i = 0; i < retries; i++) {
-    const response = await fetch(url, options);
+    let response;
+    try {
+      // Safely try proxy routing first for production
+      const urlToHit = isUsingProxy ? '/api/gemini' : directUrl;
+      response = await fetch(urlToHit, options);
+      
+      // If we are developing locally without Vercel running (gives 404)
+      if (response.status === 404 && isUsingProxy) {
+        console.info("[Dev Mode] Local serverless proxy not found. Falling back to direct connection using config.js...");
+        isUsingProxy = false;
+        response = await fetch(directUrl, options);
+      }
+    } catch (e) {
+      // Local file:// protocol exceptions when hitting /api/gemini
+      if (isUsingProxy) {
+        console.info("[Dev Mode] Local proxy failed (network). Falling back to direct connection...");
+        isUsingProxy = false;
+        response = await fetch(directUrl, options);
+      } else {
+        throw e; // Reraise true failure
+      }
+    }
+
     if (!response.ok && response.status === 429 && i < retries - 1) {
       console.warn(`[API] 429 Too Many Requests. Retrying in ${delay}ms...`);
       await new Promise(res => setTimeout(res, delay));
