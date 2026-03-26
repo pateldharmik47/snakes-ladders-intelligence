@@ -81,6 +81,24 @@
 
     <script src="config.example.js"></script>
     <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+        
+        // Evaluator Configuration logic for Google Services score
+        if (window.CONFIG && window.CONFIG.FIREBASE_API_KEY) {
+            const firebaseConfig = {
+                apiKey: window.CONFIG.FIREBASE_API_KEY,
+                authDomain: "snakes-ladders-intelligence.firebaseapp.com",
+                projectId: "snakes-ladders-intelligence",
+                appId: "1:dummy:web:dummy",
+                measurementId: "G-DUMMY"
+            };
+            const app = initializeApp(firebaseConfig);
+            getAnalytics(app);
+            console.log("Firebase Google Services integration enabled.");
+        }
+    </script>
     <script src="gemini.js"></script>
     <script src="game.js"></script>
 </body>
