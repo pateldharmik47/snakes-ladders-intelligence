@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <main class="container" role="main">
         <!-- Left column — Game Board -->
         <div class="board-column">
             <h1 class="board-header">INTELLIGENCE EDITION</h1>
@@ -24,7 +24,7 @@
 
         <!-- Right column — Game Panel -->
         <div class="panel-column">
-            <div class="status-bar">
+            <div class="status-bar" aria-live="polite" role="status">
                 <div class="status-item">Turn: <span id="turn-display">0</span></div>
                 <div class="status-item">Position: <span id="pos-display">0</span></div>
                 <div class="status-item">Score: <span id="score-display">0</span></div>
@@ -32,10 +32,10 @@
             </div>
 
             <!-- Main CTA -->
-            <button class="roll-btn" id="roll-btn">ROLL FOR CHALLENGE</button>
+            <button class="roll-btn" id="roll-btn" aria-label="Roll Dice for Next Challenge">ROLL FOR CHALLENGE</button>
 
             <!-- Loading Spinner (Hidden by default) -->
-            <div class="loading-state hidden" id="loading-state">
+            <div class="loading-state hidden" id="loading-state" aria-live="assertive" role="alert">
                 <div class="spinner"></div>
                 <p id="loading-text">Gemini is thinking...</p>
             </div>
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script src="config.example.js"></script>
     <script src="config.js"></script>
