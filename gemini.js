@@ -36,22 +36,7 @@ async function fetchWithRetry(directUrl, options, retries = 3, delay = 2000) {
 }
 
 async function generateChallenge(challengeType, difficulty) {
-  if (CONFIG.GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE" || !CONFIG.GEMINI_API_KEY) {
-    console.log("[Demo Mode] Generating mock challenge");
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({
-          type: challengeType,
-          difficulty: difficulty,
-          question: "Which planet in our solar system has the most moons?",
-          hint: "It has beautiful rings too",
-          keywords: ["Saturn", "moons", "82", "146"],
-          sample_good_answer: "Saturn, with confirmed moons",
-          scoring_guide: "6 for Saturn + count, 4 for Saturn only, 1 for wrong planet"
-        });
-      }, 1000);
-    });
-  }
+
 
   const prompt = `You are a game show host for an intelligent board game. 
 Generate a ${challengeType} challenge at ${difficulty} difficulty for a player.
@@ -110,19 +95,7 @@ Keep questions concise (max 20 words). Make them fun and engaging.`;
 }
 
 async function evaluateAnswer(question, userAnswer, keywords, scoringGuide) {
-  if (CONFIG.GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE" || !CONFIG.GEMINI_API_KEY) {
-     console.log("[Demo Mode] Generating mock evaluation");
-     return new Promise(resolve => {
-        setTimeout(() => {
-          const score = Math.floor(Math.random() * 5) + 2; // Random 2-6
-          resolve({
-            score: score,
-            feedback: "Great attempt! Here is some generic feedback.",
-            correct_answer: "The correct answer was mock data."
-          });
-        }, 1200);
-     });
-  }
+
 
   const prompt = `You are a strict but fair judge in an intelligent board game.
 
@@ -168,7 +141,8 @@ Return ONLY a valid JSON object (no markdown, no explanation):
 
   } catch (err) {
     console.error("Gemini API Error (Evaluation):", err);
-    return { score: 3, feedback: "Challenge skipped due to connection issue.", correct_answer: "N/A" };
+    const score = Math.floor(Math.random() * 5) + 2; // Random 2-6
+    return { score: score, feedback: "Great attempt! Here is some fallback generic feedback due to connection issue.", correct_answer: "Mock fallback data." };
   }
 }
 
