@@ -1,3 +1,13 @@
+/**
+ * Executes a resilient fetch request with exponential backoff designed for Vercel/Gemini proxy structures.
+ * 
+ * @param {string} directUrl - The fallback direct connection URL.
+ * @param {object} options - Fetch configuration options (method, headers, body).
+ * @param {number} [retries=3] - Maximum number of retry attempts allowed on limits.
+ * @param {number} [delay=2000] - Base delay interval in milliseconds for backoff.
+ * @returns {Promise<Response>} Resolves with the valid network response.
+ * @throws {Error} Throws standard network or routing errors upon true failure.
+ */
 async function fetchWithRetry(directUrl, options, retries = 3, delay = 2000) {
   let isUsingProxy = true;
   
@@ -35,6 +45,13 @@ async function fetchWithRetry(directUrl, options, retries = 3, delay = 2000) {
   }
 }
 
+/**
+ * Automatically requests and parses a uniquely generated cognitive challenge from the primary LLM model.
+ *
+ * @param {string} challengeType - Specific mathematical, trivia, or algorithmic format.
+ * @param {string} difficulty - Pre-configured difficulty scalar ("easy", "medium", "hard").
+ * @returns {Promise<Object>} An embedded structured object encapsulating the challenge data.
+ */
 async function generateChallenge(challengeType, difficulty) {
 
 
@@ -94,6 +111,15 @@ Keep questions concise (max 20 words). Make them fun and engaging.`;
   }
 }
 
+/**
+ * Cross-references the player's semantic response firmly against standardized model routing constraints to assign a score.
+ *
+ * @param {string} question - The original challenge generated query.
+ * @param {string} userAnswer - Open-ended responsive text provided dynamically by user.
+ * @param {Array<string>} keywords - Validated heuristic logic keywords.
+ * @param {string} scoringGuide - Custom scoring weights parameter injected by game.
+ * @returns {Promise<Object>} A final score (1-6) along with targeted model feedback.
+ */
 async function evaluateAnswer(question, userAnswer, keywords, scoringGuide) {
 
 
